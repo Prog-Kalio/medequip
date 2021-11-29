@@ -86,7 +86,17 @@ include_once("memheader.php");
 	              	// register
 					$new_User = $objuser->addCustomers($_POST['cust_firstname'], $_POST['cust_lastname'], $_POST['cust_phone'], $_POST['cust_email'], $_POST['cust_username'], $_POST['cust_password'], $_POST['cust_gender'], $_POST['cust_address']);
 
+						// so create session variables
+					
+						$_SESSION['cust_firstname'] = $_POST['cust_firstname'];
+						$_SESSION['cust_lastname'] = $_POST['cust_lastname'];
+						$_SESSION['cust_phone'] = $_POST['cust_phone'];
 						$_SESSION['cust_email'] = $_POST['cust_email'];
+						$_SESSION['cust_username'] = $_POST['cust_username'];
+						$_SESSION['cust_gender'] = $_POST['cust_gender'];
+						$_SESSION['cust_address'] = $_POST['cust_address'];
+						// to go a step further, add a special key to authenticate who is in session.
+						$_SESSION['mem'] = "@@Exec_2090%";
 
 					header("Location: customer_dashboard.php?msg=Successfuly logged in");
 					exit;
@@ -168,7 +178,19 @@ include_once("memheader.php");
 	              	// register
 					$new_seller = $objsign->addRetailers($_POST['retailers_firstname'], $_POST['retailers_lastname'], $_POST['retailers_phone'], $_POST['retailers_company'], $_POST['retailers_email'], $_POST['retailers_password'], $_POST['retailers_address']);
 
-						$_SESSION['retailers_email'] = $_POST['retailers_email'];
+						// echo "<pre>";
+						// print_r($new_seller);
+						// echo "</pre>";
+						// so create session variables
+						
+							$_SESSION['retailers_company'] = $_POST['retailers_company'];
+							$_SESSION['retailers_firstname'] = $_POST['retailers_firstname'];
+							$_SESSION['retailers_lastname'] = $_POST['retailers_lastname'];
+							$_SESSION['retailers_email'] = $_POST['retailers_email'];
+							$_SESSION['retailers_phone'] = $_POST['retailers_phone'];
+							$_SESSION['retailers_address'] = $_POST['retailers_address'];
+							// to go a step further, add a special key to authenticate who is in session.
+							$_SESSION['mem'] = "@@Exec_2090%";
 
 					header("Location: retailers_dashboard.php?msg=Successfuly logged in");
 					exit;
@@ -213,7 +235,11 @@ include_once("memheader.php");
 								echo "<p class='alert alert-danger'>Invalid Login credentials</p>";
 							}
 							else {
-								$_SESSION['cust_email'] = $_POST['cust_email'];
+								// so create session variables
+							$_SESSION['cust_email'] = $_POST['cust_email'];
+
+							// to go a step further, add a special key to authenticate who is in session.
+							$_SESSION['mem'] = "@@Exec_2090%";
 								header("Location: customer_dashboard.php");
 								exit;
 								
@@ -256,7 +282,16 @@ include_once("memheader.php");
 							echo "<p class='alert alert-danger'>Invalid Login credentials</p>";
 						}
 						else {
+
+							// so create session variables
 							$_SESSION['retailers_email'] = $_POST['retailers_email'];
+
+							// to go a step further, add a special key to authenticate who is in session.
+							$_SESSION['mem'] = "@@Exec_2090%";
+
+							// echo "<pre>";
+							// print_r($myOutput);
+							// echo "</pre>";
 							header("Location: retailers_dashboard.php?msg=Successfully logged in");
 							exit;
 						}
@@ -336,7 +371,7 @@ include_once("memheader.php");
 					<label>Company Name</label>
 					<input type="text" name="retailers_company" class="form-control" placeholder="Email Address">
 					<label>Email Address</label>
-					<input type="email" name="retailers_email" class="form-control" placeholder="Username">
+					<input type="email" name="retailers_email" class="form-control" placeholder="Email">
 					<label>Password</label>
 					<input type="password" name="retailers_password" class="form-control" placeholder="Password">
 					<label>Address</label>

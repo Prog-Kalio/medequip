@@ -46,7 +46,18 @@ class MyRetailers {
 		$result = $this->dbcon->query($sql);
 
 		if ($this->dbcon->affected_rows == 1) {
-			return true;
+			// instead of returning true, let's create session since we want to proceed to dashboard
+				// so create session variables
+				$_SESSION['retailer_id'] = $this->dbcon->insert_id;
+				$_SESSION['retailers_company'] = $retailers_company;
+				$_SESSION['retailers_firstname'] = $retailers_firstname;
+				$_SESSION['retailers_lastname'] = $retailers_lastname;
+				$_SESSION['retailers_email'] = $retailers_email;
+				$_SESSION['retailers_phone'] = $retailers_phone;
+				$_SESSION['retailers_address'] = $retailers_address;
+				// to go a step further, add a special key to authenticate who is in session.
+				$_SESSION['mem'] = "@@Exec_2090%";
+			
 		}
 		else {
 			return "Contact could not be added".$this->dbcon->error."<br>";
@@ -84,6 +95,48 @@ class MyRetailers {
 			else {
 				return false;
 			}
+		}
+
+
+		// Get retailers id
+		function getAllRetailers() {
+	
+			// write the query
+			$sql = "SELECT equipments.equip_name, equipments.equip_brand, equipments.equip_price, retailers.retailers_code, equipments.equip_avail, retailers.retailers_company, retailers.retailers_phone, retailers.retailers_address, equipments.created_at, equipments.updated_at FROM equipments JOIN retailers ON equipments.retailers_code = retailers.retailers_code ORDER BY equipments.retailers_code";
+
+			$rows = array();
+			// run the query
+			$result = $this->dbcon->query($sql);
+			if($this->dbcon->affected_rows > 0) {
+				while($row = $result->fetch_array()) {
+					$rows[] = $row;
+				}
+				return $rows;
+			}
+			else {
+					return $rows;
+				}
+		}
+
+
+
+		// Get specific retailers
+		function getSpecificRetailer($retailers_code) {
+			$sql = "SELECT equipments.equip_name, equipments.equip_brand, equipments.equip_price, retailers.retailers_code, equipments.equip_avail, retailers.retailers_company, retailers.retailers_phone, retailers.retailers_address, equipments.created_at, equipments.updated_at FROM equipments JOIN retailers ON equipments.retailers_code = retailers.retailers_code WHERE equipments.retailers_code='$retailers_code'";
+
+			$result = $this->dbcon->query($sql);
+			$rows = array();
+
+			if ($this->dbcon->affected_rows > 0) {
+				while ($row = $result->fetch_array()) {
+					$rows[] = $row;
+				}
+				return $rows;
+			}
+			else {
+				return $rows;
+			}
+			
 		}
 
 }
@@ -132,12 +185,17 @@ class MyRetailers {
 			if ($this->dbcon->affected_rows == 1) {
 				// instead of returning true, let's create session since we want to proceed to dashboard
 				// so create session variables
-				
-				// $_SESSION['userid'] = $this->dbcon->insert_id;
-				// $_SESSION['newUsername'] = $cust_username;
-				// $_SESSION['newUsrpswd'] = $cust_password;
-				// // to go a step further, add a special ket to authenticate who is in session.
-				// $_SESSION['memyek'] = "@@Exec2090";
+					
+					$_SESSION['cust_id'] = $this->dbcon->insert_id;
+					$_SESSION['cust_firstname'] = $cust_firstname;
+					$_SESSION['cust_lastname'] = $cust_lastname;
+					$_SESSION['cust_phone'] = $cust_phone;
+					$_SESSION['cust_email'] = $cust_email;
+					$_SESSION['cust_username'] = $cust_username;
+					$_SESSION['cust_gender'] = $cust_gender;
+					$_SESSION['cust_address'] = $cust_address;
+					// to go a step further, add a special key to authenticate who is in session.
+					$_SESSION['mem'] = "@@Exec_2090%";
 
 				// next is to redirect to dashboard
 				return true;
@@ -216,11 +274,11 @@ class MyRetailers {
 		// create variables/properties/attributes
 		public $equip_name;
 		public $equip_brand;
-		public $equip_model;
-		public $equip_manuf;
+		public $category_id;
 		public $equip_price;
-		public $equip_rep;
 		public $equip_avail;
+		public $equip_photo;
+		public $retailers_code;
 		public $dbcon; //database coonection handler
 
 		// create method/functions/operations
@@ -231,29 +289,184 @@ class MyRetailers {
 			if ($this->dbcon->connect_error) {
 				die("Connection failed".$this->dbcon->connect_error)."<br>";
 			}
-			else {
-				echo "Connection Successful";
-			}
+			// else {
+			// 	echo "Connection Successful";
+			// }
 		}
 
 
-		function addEquipment($equip_name, $equip_brand, $equip_model, $equip_manuf, $equip_price, $equip_rep, $equip_avail, $equip_pix) {
-
-			$sql = "INSERT INTO equipment(equip_name, equip_brand, equip_model, equip_manuf, equip_price, equip_avail, equip_pix) VALUES('$equip_name', '$equip_brand', '$equip_model', '$equip_manuf', '$equip_price', '$equip_rep', '$equip_avail', '$equip_pix')";
-
-			// check result
+		function getEquipmentById($id) {
+			$sql = "SELECT * FROM equipments where equip_id='$id'";
+			$details=[];
 			$result = $this->dbcon->query($sql);
+			
+			if ($this->dbcon->affected_rows > 0) {
+					$details=$result->fetch_assoc();
+			}
+			return $details;
+		}
 
-			if ($this->dbcon->affected_rows == 1) {
-				return true;
+
+		function getEquipment() {
+			$sql = "SELECT * FROM equipments ORDER BY rand()";
+
+			$result = $this->dbcon->query($sql);
+			$rows = array();
+			if ($this->dbcon->affected_rows > 0) {
+				while($row = $result->fetch_array()) {
+					$rows[] = $row;
+				}
+				return $rows;
 			}
 			else {
-				return "Contact could not be added".$this->dbcon->error."<br>";
+				return $rows;
 			}
 		}
 
 
+
+		function searchEquipment($searchdata) {
+			$sql = "SELECT * FROM equipments WHERE equip_name LIKE '%$searchdata%' OR equip_brand LIKE '%$searchdata%'";
+			// var_dump($sql);
+			
+			$result = $this->dbcon->query($sql);
+			$rows = array();
+			if($this->dbcon->affected_rows > 0) {
+				while($row = $result->fetch_assoc()) {
+					$rows[] = $row;
+				}
+				return $rows;
+			}
+			return $rows;
+		}
+
+
+
+		public function uploadPhoto($equip_name, $equip_brand, $category_id, $equip_price, $equip_avail, $equip_photo, $retailers_code) {
+		
+		// first define variables
+		$file_name = $_FILES['equip_photo']['name'];
+		$file_type = $_FILES['equip_photo']['type'];
+		$file_tmp_name = $_FILES['equip_photo']['tmp_name'];
+		$file_error = $_FILES['equip_photo']['error'];
+		$file_size = $_FILES['equip_photo']['size'];
+
+		// validate
+		$error = array();
+
+		if ($file_error > 0) {
+			$error[] = "You are yet to upload a file";
+		}
+
+		if ($file_size > 2097512) {
+			$error[] = "Max file size is 2MB";
+		}
+
+		$extensions = array("jpeg", "jpg", "png", "svg");
+
+		$file_ext = explode(".", $file_name);
+
+		$file_ext = end($file_ext);
+
+		if (!in_array(strtolower($file_ext), $extensions)) {
+			$error[] = $file_ext." file format not supported!";
+		}
+		if (!empty($error)) {
+			foreach ($error as $key => $value) {
+				return "<div class='alert alert-danger'>$value</div>";
+			}
+		}
+		
+		$folder = "uploads/";
+
+		$newfilename = time().rand().".".$file_ext;
+
+		$destination = $folder.$newfilename;
+
+		if(move_uploaded_file($file_tmp_name, $destination)) {
+
+			$sql = "INSERT INTO equipments(equip_name, equip_brand, category_id, equip_price, equip_avail, equip_photo, retailers_code) VALUES('$equip_name', '$equip_brand', '$category_id', '$equip_price', '$equip_avail', '$newfilename', '$retailers_code')";
+			// var_dump($sql);
+			$result = $this->dbcon->query($sql);
+			 if($this->dbcon->affected_rows == 1) {
+			 	// echo "<p>Equipment added successfuly</p>";
+			 	// return true;
+			 }
+			 else {
+			 	echo "could not be added".$this->dbcon->error;
+			 	// return false;
+			 }
+		}
 	}
+
+
+
+		// update equipment
+		public function updateEquipment($equip_name, $equip_brand, $category_id, $equip_price, $equip_avail, $equip_photo, $retailers_code) {
+
+
+			// first define variables
+		$file_name = $_FILES['equip_photo']['name'];
+		$file_type = $_FILES['equip_photo']['type'];
+		$file_tmp_name = $_FILES['equip_photo']['tmp_name'];
+		$file_error = $_FILES['equip_photo']['error'];
+		$file_size = $_FILES['equip_photo']['size'];
+
+		// validate
+		$error = array();
+
+		if ($file_error > 0) {
+			$error[] = "You are yet to upload a file";
+		}
+
+		if ($file_size > 2097512) {
+			$error[] = "Max file size is 2MB";
+		}
+
+		$extensions = array("jpeg", "jpg", "png", "svg");
+
+		$file_ext = explode(".", $file_name);
+
+		$file_ext = end($file_ext);
+
+		if (!in_array(strtolower($file_ext), $extensions)) {
+			$error[] = $file_ext." file format not supported!";
+		}
+		if (!empty($error)) {
+			foreach ($error as $key => $value) {
+				return "<div class='alert alert-danger'>$value</div>";
+			}
+		}
+		
+		$folder = "uploads/";
+
+		$newfilename = time().rand().".".$file_ext;
+
+		$destination = $folder.$newfilename;
+
+		if(move_uploaded_file($file_tmp_name, $destination)) {
+
+			// write the query
+			$sql = "UPDATE equipments SET equip_name='$equip_name', equip_brand='$equip_brand', category_id='$category_id', equip_price='$equip_price', equip_avail='$equip_avail', equip_photo='$newfilename' WHERE equip_name='$equip_name'";
+
+			// run the query
+			$result =$this->dbcon->query($sql);
+
+			$output = array();
+			if ($this->dbcon->affected_rows==1) {
+				$output['success'] = "Equipment details was successfully updated";
+			} 
+			elseif ($this->dbcon->affected_rows==0) {
+				$output['success'] = "No changes made!";
+			}
+			else {
+				$output['error'] = "An error occured!".$this->dbcon->error;
+			}
+			return $output;
+			}
+		}
+
+}
 
 
 // End MyEquipment Class Diagram
@@ -354,7 +567,15 @@ class MyRetailers {
 		$result = $this->dbcon->query($sql);
 
 			if ($this->dbcon->affected_rows == 1) {
-				return true;
+				$_SESSION['admin_id'] = $this->dbcon->insert_id;
+				$_SESSION['admin_fname'] = $admin_fname;
+				$_SESSION['admin_lname'] = $admin_lname;
+				$_SESSION['admin_phone'] = $admin_phone;
+				$_SESSION['admin_email'] = $admin_email;
+				$_SESSION['admin_gender'] = $admin_gender;
+				$_SESSION['admin_staffno'] = $admin_staffno;
+				// to go a step further, add a special key to authenticate who is in session.
+				$_SESSION['mem'] = "@@Exec_2090%";
 			}
 			else {
 				return false;
@@ -421,5 +642,107 @@ class MyRetailers {
 // End  My Admin Class Diagram
 
 
+// Start My Category Class Diagram
 
+	class MyCategory {
+
+		public $category_name;
+		public $dbcon; //database connection handler
+
+
+		//create method/function/operation
+		function __construct() {
+			$this->dbcon = new MySqli(DB_SERVERNAME, DB_USERNAME, DB_PASSWORD, DB_NAME);
+
+			if ($this->dbcon->connect_error){
+				die("Connection failed".$this->dbcon->connect_error)."<br>";
+			}
+			// else {
+			// 	echo "Connection successful";
+			// }
+		}
+
+
+
+		function addCategory($category_name) {
+
+		$sql = "INSERT INTO category(category_name) VALUES('$category_name')";
+
+		// check result
+		$result = $this->dbcon->query($sql);
+
+			if ($this->dbcon->affected_rows == 1) {
+				return true;
+			}
+			else {
+				return false;
+			}
+
+		}
+
+
+
+		// Get all Categories
+		function getSpecificCategory($category_id) {
+			$sql = "SELECT equipments.* FROM equipments JOIN category ON category.category_id=equipments.category_id WHERE equipments.category_id LIKE '$category_id' ORDER BY rand()";
+
+
+			$result = $this->dbcon->query($sql);
+			$rows = array();
+
+			if ($this->dbcon->affected_rows > 0) {
+				while ($row = $result->fetch_array()) {
+					$rows[] = $row;
+				}
+				return $rows;
+			}
+			else {
+				return $rows;
+			}
+			
+		}
+
+
+
+		// Get all Users information
+		function getCategory() {
+			$sql = "SELECT * FROM category";
+
+			$result = $this->dbcon->query($sql);
+			$rows = array();
+
+			if ($this->dbcon->affected_rows > 0) {
+				while ($row = $result->fetch_array()) {
+					$rows[] = $row;
+				}
+				return $rows;
+			}
+			else {
+				return $rows;
+			}
+			
+		}
+
+
+
+		// Get all categories and equipment information
+		function getAllCategory() {
+			$sql = "SELECT category.category_id, category.category_name, equipments.equip_name FROM category JOIN equipments ON category.category_id=equipments.category_id ORDER BY category.category_id";
+
+			$result = $this->dbcon->query($sql);
+			$rows = array();
+
+			if ($this->dbcon->affected_rows > 0) {
+				while ($row = $result->fetch_array()) {
+					$rows[] = $row;
+				}
+				return $rows;
+			}
+			else {
+				return $rows;
+			}
+			
+		}
+
+	}
 ?>

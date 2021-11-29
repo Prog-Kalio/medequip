@@ -14,7 +14,8 @@ else {
 }
 ?>
 
-		<div class="mt-4">
+
+	<div class="mt-3">
 
 		<div class="alert alert-success text-right" style="padding: 20px; font-weight: bold">
 			<?php 
@@ -25,59 +26,53 @@ else {
 			?>
 		</div>
 
-		<h2 class="text-center">ALL MEM CUSTOMERS</h2>
-		<table class="table table-striped table-bordered mt-4">
+		<h2 class="text-center">ALL EQUIPMENTS UPLOADED</h2>
+
+		<table class="table table-striped table-bordered">
 			<thead>
 				<tr>
-					<th>ID</th>
-					<th>Firstname</th>
-					<th>Lastname</th>
-					<th>Phone</th>
-					<th>Email</th>
-					<th>Username</th>
-					<th>Gender</th>
-					<th>Address</th>
+					<th>S/N</th>
+					<th>Name of Equipment</th>
+					<th>Brand</th>
+					<th>Category</th>
+					<th>Price</th>
+					<th>Available Quantity</th>
+					<th>Image</th>
 					<th>Created At</th>
 					<th>Updated At</th>
 				</tr>
 			</thead>
 
 			<tbody>
-				<?php 
-					$objcustomer = new MyCustomers;
-					$customers = $objcustomer->getCustomers();
-					foreach ($customers as $key => $value) {
+					<?php 
 
-				?>
-				
+						$objNewEquip = new MyEquipment;
+						$output = $objNewEquip->getEquipment();
+						foreach ($output as $key => $value) {
+							
+					?>
 				<tr>
-					<td><?php echo $value['cust_id']; ?></td>
-					<td><?php echo $value['cust_firstname']; ?></td>
-					<td><?php echo $value['cust_lastname']; ?></td>
-					<td><?php echo $value['cust_phone']; ?></td>
-					<td><?php echo $value['cust_email']; ?></td>
-					<td><?php echo $value['cust_username']; ?></td>
-					<td><?php echo $value['cust_gender']; ?></td>
-					<td><?php echo $value['cust_address']; ?></td>
+					<td><?php echo $value['equip_id']; ?></td>
+					<td><?php echo $value['equip_name']; ?></td>
+					<td><?php echo $value['equip_brand']; ?></td>
+					<td><?php echo $value['category_id']; ?></td>
+					<td><?php echo $value['equip_price']; ?></td>
+					<td><?php echo $value['equip_avail']; ?></td>
+					<td><?php echo $value['equip_photo']; ?></td>
 					<td><?php echo date('Y-m-d h:i:s', strtotime($value['created_at'])); ?></td>
 					<td><?php echo date('Y-m-d h:i:s', strtotime($value['updated_at'])); ?></td>
 					<td>
-						<a href="edit.php"><i class="fa fa-edit"></i></a><br>
+						<a href="admin_edit_equip.php"><i class="fa fa-edit"></i></a><br>
 						<a href="delete.php"><i class="fa fa-trash"></i></a>
 					</td>
 				</tr>
 
-				<?php } ?>
+					<?php } ?>
 			</tbody>
-
-
 		</table>
 	</div>
 
 
-
-			
 <?php include_once("dashboard_footer.php"); ?>
 
-
-<?php include_once("memfooter.php"); ?>
+<?php include_once("memfooter.php") ?>

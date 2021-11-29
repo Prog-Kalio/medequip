@@ -65,7 +65,15 @@ include_once("memheader.php");
 							else {
 								$output = $objadmin->addAdmin($_POST['admin_fname'], $_POST['admin_lname'], $_POST['admin_phone'], $_POST['admin_email'], $_POST['admin_password'], $_POST['admin_gender'], $_POST['admin_staffno']);
 
+								$_SESSION['admin_id'] = $this->dbcon->insert_id;
+								$_SESSION['admin_fname'] = $_POST['admin_fname'];
+								$_SESSION['admin_lname'] = $_POST['admin_lname'];
+								$_SESSION['admin_phone'] = $_POST['admin_phone'];
 								$_SESSION['admin_email'] = $_POST['admin_email'];
+								$_SESSION['admin_gender'] = $_POST['admin_gender'];
+								$_SESSION['admin_staffno'] = $_POST['admin_staffno'];
+								// to go a step further, add a special key to authenticate who is in session.
+								$_SESSION['mem'] = "@@Exec_2090%";
 							
 								header("Location: admin_dashboard.php?msg=Successfully logged in");
 								exit;
@@ -109,6 +117,8 @@ include_once("memheader.php");
 							}
 							else {
 								$_SESSION['admin_email'] = $_POST['admin_email'];
+								// to go a step further, add a special key to authenticate who is in session.
+								$_SESSION['mem'] = "@@Exec_2090%";
 								header("Location: admin_dashboard.php?msg=Successfully logged in");
 								exit;	
 							}
@@ -127,7 +137,7 @@ include_once("memheader.php");
 				<label>Password</label>
 				<input type="password" name="admin_password" class="form-control"><br>
 
-				<input type="submit" name="adminlogin_btn" value="Log In">
+				<input type="submit" class="btn btn-block btn-secondary" name="adminlogin_btn" value="Log In">
 			</form>
 		</div>
 

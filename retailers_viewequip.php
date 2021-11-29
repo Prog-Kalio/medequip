@@ -46,28 +46,30 @@ else {
 					
 				</div>
 
-				<div class="col-md-7">
-					<?php if (isset($_SESSION['retailers_firstname'], $_SESSION['retailers_lastname'], $_SESSION['retailers_company'], $_SESSION['retailers_phone'], $_SESSION['retailers_email'])) { ?>
-					<div style="padding: 20px">
-					<h5>My DASHBOARD</h5>
-					<h5>Here are your Signup Details:</h5>
-					<ul>
-					<li>Name: <?php echo $_SESSION['retailers_firstname']." ".$_SESSION['retailers_lastname']; ?></li>
-					<li>Company Name: <?php echo $_SESSION['retailers_company']; ?></li>
-					<li>Phone Number: <?php echo $_SESSION['retailers_phone']; ?></li>
-					<li>Email: <?php echo $_SESSION['retailers_email']; ?></li>
-					</ul>
-					</div>
-					<?php 
-						} else {
-					?>
-					<div>
-						<h5>My DASHBOARD</h5>
-						<p>You are welcome: <b><?php echo $_SESSION['retailers_email']; ?></b></p>
-						<p>What would you like to do today?</p>
-					</div>
-					<?php } ?>
-				</div>
+				
+
+		<div class="col-md-2 offset-md-3 card card-body alert alert-dark mt-5">
+			<?php 
+
+				if (isset($_POST['retailers_view_btn']) && $_POST['retailers_view_btn'] == 'View Equipment') { 
+					if(empty($_POST['retailers_code'])) {
+						echo "<p class='alert alert-danger'>Your Retailers code is required</p>";
+					}
+					else {
+						$_SESSION['retailers_code'] = $_POST['retailers_code'];
+						header("Location: retailers_equipment_list.php");
+						exit;
+					}
+				}
+
+			?>
+			<form name="retailers_login_form" action="" method="post" class="form-group">
+				<label>RETAILERS CODE</label>
+				<input type="text" name="retailers_code" class="form-control" placeholder="MEM/RET/XXXX">
+				<br>
+				<input type="submit" name="retailers_view_btn" class="btn btn-dark" value="View Equipment">
+			</form>
+		</div>
 
 
 			</div>

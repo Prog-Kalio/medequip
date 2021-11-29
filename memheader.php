@@ -1,5 +1,5 @@
 <?php
-
+session_id();
 ob_start();
 ?>
 <!DOCTYPE html>
@@ -14,6 +14,7 @@ ob_start();
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/animate.min.css">
 	<link rel="stylesheet" type="text/css" href="fontawesome/css/all.css">
+	<!-- <link type='text/css' rel='stylesheet' href='https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'> -->
 	<style type="text/css">
 
 		* {
@@ -23,7 +24,7 @@ ob_start();
 		}
 
 		.container-fluid {
-			min-height: 1500px;
+			min-height: 500px;
 			max-width: 100%;
 			background-color: rgb(245,245,245);
 		}
@@ -385,7 +386,7 @@ ob_start();
 			width: 96%;
 			margin: auto;
 			max-height: 350px;
-			margin-bottom: 10px;
+			margin-bottom: 40px;
 		}
 		
 		.main-galleryimg {
@@ -395,6 +396,7 @@ ob_start();
 		 
 		.gallery-div {
 			width: 94%;
+			margin-top: 5px;
 			height: 70px;
 			margin: auto;
 		}
@@ -447,6 +449,15 @@ ob_start();
 
 		.d-menu-col {
 			max-height: 80px;
+		}
+
+		#searchdiv {
+			width: 91%;
+			background-color: #fff;
+			border: 1px solid black;
+			position: absolute;
+			top: 40px;
+			z-index: 1;
 		}
 
 		/*Media queries*/
@@ -507,10 +518,21 @@ ob_start();
 				<div class="col-md-7 r1c" id="r1c2">
 					<a href="index.php"><h3>MEDICAL EQUIPMENT MARKET</h3></a>
 				</div>
+
 				<div class="col-md-3 r1c" id="r1c3">
-					<input type="search" name="search" id="page-search" placeholder="Search equipment name" class="form-control">
+					<input type="text" name="pagesearch" id="pagesearch" placeholder="Search equipment name" class="form-control">
+
+					<div id="searchdiv">Display Member here</div>
+
 				</div>
+
 				<div class="col-md-1 r1c" id="r1c4">
-					<i class="fa fa-cart-plus" id="home-cart"></i>
+					<a href="cart.php>"><i class="fa fa-cart-plus" id="home-cart"></i>
+						<?php
+                    		if (!empty($_SESSION['cart'])) {
+                    			echo count($_SESSION['cart'])." item(s)";
+                    		}
+                    	?>
+					</a>
 				</div>
 			</div>

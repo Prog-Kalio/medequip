@@ -1,5 +1,6 @@
 <?php session_start();
 include_once("classes.php");
+include_once("paystackclass.php");
 include_once("memheader.php");
 if(!isset($_SESSION['cust_email'])) {
 	header("Location: index.php?msg=Please login");
@@ -26,6 +27,7 @@ else {
 					<div class="alert alert-success" style="padding: 20px; font-weight:bold">
 						
 					<h5><?php echo $success." ".$_SESSION['cust_firstname']; ?></h5>
+					
 					<?php 
 						} else {
 
@@ -36,41 +38,53 @@ else {
 					<h5><?php echo $success." ".$emailname[0]; ?></h5>
 					<?php } ?>
 					</div>
-
 					<a href="customer_dashboard.php" class="btn btn-block btn-light text-left">DASHBOARD</a>
 					<a href="orders.php" class="btn btn-block btn-light text-left">ORDERS</a>
 					<a href="payment.php" class="btn btn-block btn-light text-left">PAYMENT</a>
 					<a href="transactions.php" class="btn btn-block btn-light text-left">TRANSACTIONS</a>
 					<a href="settings.php" class="btn btn-block btn-light text-left">SETTINGS</a>
 					<a href="logout.php" class="btn btn-block btn-light text-left">LOGOUT</a>
-					
 				</div>
 
+				<div class="col-md-5 offset-1">
 
-				<div class="col-md-7">
-					<?php if (isset($_SESSION['cust_firstname'], $_SESSION['cust_lastname'], $_SESSION['cust_phone'], $_SESSION['cust_email'], $_SESSION['cust_username'], $_SESSION['cust_gender'], $_SESSION['cust_address']))  { ?>
-					<div style="padding: 20px">
-					<h5>My DASHBOARD</h5>
-					<h5>Here are your Signup Details:</h5>
-					<ul>
-						<li>Name: <?php echo $_SESSION['cust_firstname']." ".$_SESSION['cust_lastname']; ?></li>
-						<li>Phone Number: <?php echo $_SESSION['cust_phone']; ?></li>
-						<li>Email: <?php echo $_SESSION['cust_email']; ?></li>
-						<li>Username: <?php echo $_SESSION['cust_username']; ?></li>
-						<li>Gender: <?php echo $_SESSION['cust_gender']; ?></li>
-						<li>Address: <?php echo $_SESSION['cust_address']; ?></li>
-					</ul>
-					</div>
-					<?php 
-						} else {
-					?>
-					<div>
-						<h5>My DASHBOARD</h5>
-						<p>You are welcome: <b><?php echo $_SESSION['cust_email']; ?></b></p>
-						<p>Just incase, you didn't check your mail; we've got amazing new medical equipment at great prices too!</p>
-						<p>What would you like to buy today?</p>
-					</div>
-					<?php } ?>
+					<h4 class="mt-4 mb-3">PAYMENT</h4>
+				
+				    <?php 
+				      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+				        // create payment object
+				        $payobj = new Payment;
+				        // use initializePaystack method
+				        $output = $payobj->initializePaystack($_POST['email'], $_POST['amount']);
+
+				        echo "<pre>";
+				        print_r($output->data->authorization_url);
+				        echo "</pre>";
+
+
+				        $redirecturl = $output->data->authorization_url;
+				        $reference = $output->data->reference;
+
+				        // insert transaction details & redirect to paystack
+				        if (!empty($redirecturl)) {
+				          $payobj->insertTransactionDetails($_SESSION['user_id'], $_POST['amount'], $reference);
+				          header("Location: $redirecturl");
+				          exit;
+				        }
+
+
+				      }
+				        
+
+
+				    ?>
+
+					<form method="post" action="">
+			        	<label>&#8358; 5,000.00</label> <!-- naira &#8358;-->
+			        	<input type="hidden" name="email" value="<?php echo $_SESSION['cust_email'] ?>">
+			        	<input type="hidden" name="amount" value="5000"><br>
+			        	<input type="submit" name="submit" value="Pay Due">
+			        </form>
 				</div>
 
 			</div>

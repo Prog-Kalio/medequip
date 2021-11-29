@@ -46,7 +46,7 @@ else {
 				</div>
 
 				<div class="col-md-4 offset-md-2">
-					<h4>UPLOAD NEW EQUIPMENT</h4><br>
+					<h4>EDIT UPLOADED EQUIPMENT</h4><br>
 					<?php 
 						if (isset($_REQUEST['equipment_btn']) && $_REQUEST['equipment_btn'] =='SUBMIT') {
 							$errorfound = array();
@@ -78,12 +78,15 @@ else {
 							}
 						
 								$objequip = new MyEquipment;
-								$output = $objequip->uploadPhoto($_REQUEST['equip_name'], $_REQUEST['equip_brand'], $_REQUEST['category_id'], $_REQUEST['equip_price'], $_REQUEST['equip_avail'], $_FILES['equip_photo'], $_REQUEST['retailers_code']);
+								$output = $objequip->updateEquipment($_REQUEST['equip_name'], $_REQUEST['equip_brand'], $_REQUEST['category_id'], $_REQUEST['equip_price'], $_REQUEST['equip_avail'], $_FILES['equip_photo'], $_REQUEST['retailers_code']);
 
-								if(empty($output)) {
-								 	echo "<div class='alert alert-success'>Profile updated successfully!</div>";
-								 	
-								 	}
+									if (key($output) == 'success') {
+						                $message = $output['success'];
+						                echo "<div class='alert alert-success'>$message</div>";
+						              }
+						              else {
+						                echo "<div class='alert alert-danger'>".$output['error']."</div>";
+						              }
 							
 						}
 					?>

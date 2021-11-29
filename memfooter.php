@@ -11,10 +11,10 @@
 					<a href="admin.php">Admin</a></p>
 
 					<h5>PAYMENT PLATFORMS</h5>
-					<a href="#"><img src="images/mastercard.png" class="img-fluid" alt="Mastercard"></a>&nbsp;
-					<a href="#"><img src="images/visa.png" class="img-fluid" alt="Visa"></a>&nbsp;
-					<a href="#"><img src="images/verve.png" class="img-fluid" alt="Verve"></a>&nbsp;
-					<a href="#"><img src="images/quickteller.png" class="img-fluid" alt="Quickteller"></a>
+					<a href="login.php"><img src="images/mastercard.png" class="img-fluid" alt="Mastercard"></a>&nbsp;
+					<a href="login.php"><img src="images/visa.png" class="img-fluid" alt="Visa"></a>&nbsp;
+					<a href="login.php"><img src="images/verve.png" class="img-fluid" alt="Verve"></a>&nbsp;
+					<a href="login.php"><img src="images/quickteller.png" class="img-fluid" alt="Quickteller"></a>
 				</div>
 
 				<div class="col-md-4 r10c" id="r10c2">
@@ -70,6 +70,34 @@
 
 			$(document).ready(function(){
 
+
+				// jQuery AJAX for search engine on memheader
+
+				$('#searchdiv').hide();
+
+				$('#pagesearch').keyup(function(){
+
+					var searchdata = $('#pagesearch').val();
+
+					$.ajax({
+						url: "search.php",
+						type: "post",
+						data: "names="+searchdata,
+						success: function(response) {
+							$('#searchdiv').show();
+							$('#searchdiv').html(response);
+						}
+
+					});
+				});
+
+
+				$('#pagesearch').blur(function(){
+					$('#searchdiv').hide();
+				});
+
+			// the end of jqueryAJAX 
+
 				$('#existingUser').click(function(){
 					$('.retailer').hide();
 					$('#regPicsDiv').hide();
@@ -77,7 +105,7 @@
 					$('#div-ExtUser').show();
 					$('#div-ExtUser').addClass('animate__animated animate__bounceInDown');
 					$('#fa-times').show();
-				})
+				});
 
 
 				$('#existingSeller').click(function(){
@@ -87,7 +115,7 @@
 					$('#div-ExtSeller').show();
 					$('#div-ExtSeller').addClass('animate__animated animate__fadeInBottomLeft');
 					$('#fa-times').show();
-				})
+				});
 
 				
 				$('#newUser').click(function(){
@@ -158,6 +186,9 @@
 						$('#tonometer3').hide();
 				});
 
+
+				
+				
 		});
 	</script>
 

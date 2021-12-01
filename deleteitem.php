@@ -2,11 +2,11 @@
 include_once("classes.php");
 include_once("memheader.php");
 if(!isset($_SESSION['cust_email'])) {
-	header("Location: index.php?msg=Please login");
+	header("Location: login.php?msg=Please login");
 }
 elseif ((!isset($_SESSION['mem'])) && ($_SESSION['mem'] != '@@Exec_2090%')) {
   
-	header("Location: index.php?msg=Please login");
+	header("Location: login.php?msg=Please login");
 }
 else {
 	$success = "Welcome";
@@ -40,31 +40,34 @@ else {
 		</div>
 
 
-		<div class="col-md-3 offset-md-1 mt-5">
-			<label>Choose Order Type</label><br>
-			<select id="ordertype" class="form-control">
-				<option value="">--Select--</option>
-				<option value="New Order">New Order</option>
-				<option value="Pending Order">Pending Order</option>
-				<option value="Successful Order">Successful Order</option>
-			</select>
+
+		<div class="col-md-3 offset-md-2 mt-5">
+			<?php 
+                    		if(isset($_POST['btn-buy1']) &&  $_POST['btn-buy1']=='DELETE') {
+                    			
+                    				$objcart = new MyCart;
+                    			
+									$newcart = $objcart->deleteItemIncart($_POST['cart_id']);
+									
+									// to go a step further, add a special key to authenticate who is in session.
+									$_SESSION['mem'] = "@@Exec_2090%";
+
+									header("Location: cart.php?msg=Successfully deleted");
+									exit;
+                    		}
+                    	?>
+			<form name="cartform" method="post" action="" class="form-group">
+
+				<label>Cart ID</label>
+				<input type="number" name="cart_id"><br>
+				<input type="submit" class="btn btn-success btn-block" name="btn-buy1" value="DELETE">
+			</form>
 		</div>
-
-		<div id="optionsdiv" class="col-md-4 mt-2 offset-md-1">
-			<h6 class="text-center">My Orders</h6>
-			<hr>
-
-		</div>
-
-	</div>
+	
+	</div>		
 
 
 
 
-		
-
-<?php 
-include_once("whatsapp.php");
-include_once("memfooter.php");
-
-?>
+<?php include_once("whatsapp.php") ?>
+<?php include_once("memfooter.php") ?>

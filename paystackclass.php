@@ -8,7 +8,7 @@
 	class Payment {
 		// member variables/properties/attributes
 		public $amount;
-		public $emailaddress;
+		public $email;
 		public $dbcon; //database connection handler
 
 		// member methods/functions
@@ -29,7 +29,7 @@
 		public function initializePaystack($email, $amount) {
 			$url = "https://api.paystack.co/transaction/initialize";
 
-			$reference = "ITP".time().rand(); //ITP we used here was from ITPRO
+			$reference = "MEM".time().rand(); //MEM we used here was from Medical Equipment Market
 			$callbackurl = "http://localhost/itpro/paystackcallback.php";
 
 			$fields = [
@@ -82,13 +82,13 @@
 
 
 		// insert payment transaction details
-		public function insertTransactionDetails($userid, $amount, $reference) {
+		public function insertTransactionDetails($session_id, $amount, $reference) {
 			$paymentmode = "paystack";
-			$transstatus = "pending";
+			$transstatus = "completed";
 			$dueyear = "2021";
 			$datepaid = date('Y-m-d h:i:s');
 
-			$sql = "INSERT INTO dues(user_id, amount, transref, transstatus, dueyear, datepaid, paymentmode) VALUES('$userid', '$amount', '$reference', '$transstatus', '$dueyear', '$datepaid', '$paymentmode')";
+			$sql = "INSERT INTO order_details(session_id, amount, transref, transstatus, dueyear, datepaid, paymentmode) VALUES('$session_id', '$amount', '$reference', '$transstatus', '$dueyear', '$datepaid', '$paymentmode')";
 
 			$response = $this->dbcon->query($sql);
 			if ($this->dbcon->affected_rows == 1) {
@@ -148,7 +148,7 @@
 		// update payment transaction details
 		public function updateTransactionDetails($reference) {
 
-			$sql = "UPDATE dues SET transstatus='completed' WHERE transref='$reference'";
+			$sql = "UPDATE order_details SET transstatus='completed' WHERE transref='$reference'";
 
 			$result = $this->dbcon->query($sql);
 			if ($this->dbcon->affected_rows == 1) {

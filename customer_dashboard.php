@@ -40,7 +40,7 @@ else {
 					<a href="customer_dashboard.php" class="btn btn-block btn-light text-left">DASHBOARD</a>
 					<a href="orders.php" class="btn btn-block btn-light text-left">ORDERS</a>
 					<a href="payment.php" class="btn btn-block btn-light text-left">PAYMENT</a>
-					<a href="transactions.php" class="btn btn-block btn-light text-left">TRANSACTIONS</a>
+					<a href="cart.php" class="btn btn-block btn-light text-left">ITEMS ON CART</a>
 					<a href="settings.php" class="btn btn-block btn-light text-left">SETTINGS</a>
 					<a href="logout.php" class="btn btn-block btn-light text-left">LOGOUT</a>
 					
@@ -74,5 +74,5 @@ else {
 				</div>
 
 			</div>
-
+<?php include_once("whatsapp.php") ?>
 <?php include_once("memfooter.php") ?>

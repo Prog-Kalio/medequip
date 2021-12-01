@@ -1,5 +1,4 @@
-<?php
-session_id();
+<?php 
 ob_start();
 ?>
 <!DOCTYPE html>
@@ -14,7 +13,7 @@ ob_start();
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/animate.min.css">
 	<link rel="stylesheet" type="text/css" href="fontawesome/css/all.css">
-	<!-- <link type='text/css' rel='stylesheet' href='https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'> -->
+	<link type='text/css' rel='stylesheet' href='https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
 	<style type="text/css">
 
 		* {
@@ -460,6 +459,22 @@ ob_start();
 			z-index: 1;
 		}
 
+		/* -------Whatsapp ---------*/
+
+		.whatsapp {
+		    position: fixed;
+		    right: 2%;
+		    bottom: 4%;
+		}
+
+		.fa-whatsapp {
+		    size: 100%;
+		    background-color: green;
+		    color: white;
+		    padding: 35%;
+		    border-radius: 50%;
+		}
+
 		/*Media queries*/
 
 		// Extra small devices: portrait phones, less than 576px
@@ -527,7 +542,7 @@ ob_start();
 				</div>
 
 				<div class="col-md-1 r1c" id="r1c4">
-					<a href="cart.php>"><i class="fa fa-cart-plus" id="home-cart"></i>
+					<a href="cart.php"><i class="fa fa-cart-plus" id="home-cart"></i>
 						<?php
                     		if (!empty($_SESSION['cart'])) {
                     			echo count($_SESSION['cart'])." item(s)";

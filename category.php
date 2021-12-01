@@ -46,7 +46,7 @@ include_once("classes.php");
 					<?php } ?>
 					<br><br><br>
 					<p><b><?php echo $value['equip_name']; ?></b></p>
-					<p><span class="span-buy">N</span><?php echo $value['equip_price']; ?></p>
+					<p><span class="span-buy">N</span><?php echo number_format($value['equip_price'], 2); ?></p>
 					<div class="approval">
                        <i class="fa fa-star"></i>
                        <i class="fa fa-star"></i>
@@ -65,5 +65,5 @@ include_once("classes.php");
 
 			</div>
 
-
+<?php include_once("whatsapp.php") ?>
 <?php include_once("memfooter.php") ?>

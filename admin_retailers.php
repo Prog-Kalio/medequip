@@ -82,5 +82,5 @@ else {
 
 
 <?php include_once("dashboard_footer.php"); ?>
-
+<?php include_once("whatsapp.php") ?>
 <?php include_once("memfooter.php") ?>

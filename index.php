@@ -1,6 +1,9 @@
-<?php 
+<?php session_start();
 include_once("memheader.php");
 include_once("classes.php");
+if (!isset($_SESSION['mycart'])) {
+	$_SESSION['mycart'] = time().rand(); 
+}
 ?>
 
 
@@ -125,7 +128,7 @@ include_once("classes.php");
 					<img class="card-img-top" src="uploads/<?php echo $value['equip_photo'] ?>" alt="equipments" width="250" height="250">
 					<?php } ?>
 					<p><b><?php echo $value['equip_name']; ?></b></p>
-					<p><span class="span-buy">N</span><?php echo $value['equip_price']; ?></p>
+					<p><span class="span-buy">N</span><?php echo number_format($value['equip_price'], 2); ?></p>
 					<div class="approval">
                        <i class="fa fa-star"></i>
                        <i class="fa fa-star"></i>
@@ -180,5 +183,5 @@ include_once("classes.php");
 					
 				</div>
 
-
+<?php include_once("whatsapp.php") ?>
 <?php include_once("memfooter.php") ?>

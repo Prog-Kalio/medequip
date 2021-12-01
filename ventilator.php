@@ -97,5 +97,7 @@ include_once("memheader.php");
 					<p><span class="span-buy">N</span>3,300,000</p>
 				</div>
 			</div>
-			
+
+
+<?php include_once("whatsapp.php") ?>			
 <?php include_once("memfooter.php") ?>

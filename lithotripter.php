@@ -86,5 +86,5 @@ include_once("memheader.php");
 				</div>
 			</div>
 
-
+<?php include_once("whatsapp.php") ?>
 <?php include_once("memfooter.php") ?>

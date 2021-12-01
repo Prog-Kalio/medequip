@@ -1,4 +1,4 @@
-<?php 
+<?php session_start();
 include_once("memheader.php");
 include_once("classes.php");
 
@@ -38,20 +38,47 @@ include_once("classes.php");
 
 				<div class="col-md-5 equip-col" id="equip-col2">
 					<h3><?php echo $value['equip_name']; ?></h3>
-					<h6><span class="span-buy">N</span><?php echo $value['equip_price']; ?></h6>
+					<h6><span class="span-buy">N</span><?php echo number_format($value['equip_price'], 2); ?></h6>
 					<div class="approval">
                        <i class="fa fa-star"></i>
                        <i class="fa fa-star"></i>
                        <i class="fa fa-star"></i>
                        <i class="fa fa-star"></i>
                     </div>
-
+                    	
                     <div>
-                    	<label>Qty: </label>
-                    	<input type="text" name="qty" id="qty" size="2px" style="text-align:center">
-                    	<a href="cart.php>"><i class="fa fa-cart-plus"></i></a>
+                    	<?php 
+                    		if(isset($_POST['btn-buy1']) &&  $_POST['btn-buy1']=='Proceed to payment') {
+                    			if(empty($_POST['quantity'])) {
+                    				echo "<div class='alert alert-danger'>Quantity must carry a value from 1 and above (No decimals also)</div>";
+                    			}
+                    			else {
+                    				$objcart = new MyCart;
+                    				$equip_name = $_POST['equip_name'];
+                    				$equip_price = $_POST['equip_price'];
+                    				$quantity = $_POST['quantity'];
+                    				$session_id = $_SESSION['mycart'];
+									$newcart = $objcart->addToCart($_POST['equip_name'], $_POST['quantity'], $_POST['equip_price'], $session_id);
+									
+									// to go a step further, add a special key to authenticate who is in session.
+									$_SESSION['mem'] = "@@Exec_2090%";
+
+									header("Location: login.php?msg=Successfuly added to cart");
+									exit;
+                    			}
+                    		}
+                    	?>
+                    	<form name="cartform" method="post" action="" class="form-group">
+                    		<input type="hidden" name="equip_name" value="<?php echo $value['equip_name'] ?>">
+                    		<label>Qty: </label>
+                    		<input type="number" name="quantity" id="qty" size="2px" style="text-align:center">
+                    		<input type="hidden" name="equip_price" value="<?php echo $value['equip_price'] ?>">
+                    		<br>
+                    		<input type="submit" class="btn btn-success btn-block" name="btn-buy1" value="Proceed to payment">
+                    	</form>
+                    	
                     </div><br>
-					<a href="login.php"><button class="btn btn-success btn-block" id="btn-buy1">Proceed to payment</button></a>
+					
 					<br><br>
 					<h5>FEATURES:</h5>
 					<p>
@@ -62,12 +89,26 @@ include_once("classes.php");
 				<div class="col-md-2 equip-col" id="equip-col3">
 					<embed width="100%" height="250" src="images/keeler_tonometer.pdf">
 					<br>
+
+					
 					<div class="retailer-info">
+					<?php $equip_id=$_GET['equipment_id'];
+					$objretailer = new MyRetailers;
+					$retailer = $objretailer->publishSpecificRetailer($equip_id);
+					if(!empty($retailer)) {
+					foreach ($retailer as $key => $value) {
+					?>
 						<h6>Retailer's details:</h6>
-						<p><b> XYZ Nigeria Ltd</b></p>
-						<p><i class="fa fa-home"></i> Opebi Road, Ikeja, Lagos</p>
-						<p><i class="fa fa-phone"></i> 08186705771</p>
+						<p><b><?php echo $value['retailers_company'] ?></b></p>
+						<p><i class="fa fa-home"></i><?php echo $value['retailers_address'] ?></p>
+						<p><i class="fa fa-phone"></i><?php echo $value['retailers_phone'] ?></p>
+						<p><i class="fa fa-message"></i><?php echo $value['retailers_email'] ?></p>
+						<?php 
+								}
+							}
+						?>
 					</div>
+							
 				</div>
 
 				<?php 
@@ -105,5 +146,5 @@ include_once("classes.php");
 			</div>
 
 
-
+<?php include_once("whatsapp.php") ?>
 <?php include_once("memfooter.php") ?>

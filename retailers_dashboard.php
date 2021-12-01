@@ -72,4 +72,5 @@ else {
 
 			</div>
 
+<?php include_once("whatsapp.php") ?>
 <?php include_once("memfooter.php") ?>

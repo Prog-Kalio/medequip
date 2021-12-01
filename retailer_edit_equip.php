@@ -128,6 +128,6 @@ else {
 
 
 <?php  
-
+include_once("whatsapp.php");
 include_once("memfooter.php");
 ?>

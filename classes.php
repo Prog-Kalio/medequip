@@ -882,4 +882,58 @@ class MyRetailers {
 	}
 
 // End MyCart class Diagram
+
+
+// Start MyOrderDetails Class Diagram
+
+	class MyOrderDetails {
+
+		public $session_id;
+		public $amount;
+		public $transref;
+		public $transstatus;
+		public $dueyear;
+		public $datepaid;
+		public $paymentmode;
+		public $dbcon; //database connection handler
+
+
+		//create method/function/operation
+		function __construct() {
+			$this->dbcon = new MySqli(DB_SERVERNAME, DB_USERNAME, DB_PASSWORD, DB_NAME);
+
+			if ($this->dbcon->connect_error){
+				die("Connection failed".$this->dbcon->connect_error)."<br>";
+			}
+			// else {
+			// 	echo "Connection successful";
+			// }
+		}
+
+
+
+		// Get all Users information
+		function getFromOrderDetails() {
+			$sql = "SELECT * FROM order_details";
+
+			$result = $this->dbcon->query($sql);
+			$rows = array();
+
+			if ($this->dbcon->affected_rows > 0) {
+				while ($row = $result->fetch_array()) {
+					$rows[] = $row;
+				}
+				return $rows;
+			}
+			else {
+				return $rows;
+			}
+			
+		}
+
+
+	}
+
+// End MyOrderDetails class Diagram
+?>
 ?>

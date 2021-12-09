@@ -30,7 +30,7 @@
 			$url = "https://api.paystack.co/transaction/initialize";
 
 			$reference = "MEM".time().rand(); //MEM we used here was from Medical Equipment Market
-			$callbackurl = "http://localhost/itpro/paystackcallback.php";
+			$callbackurl = "http://localhost/mem/paystackcallback.php";
 
 			$fields = [
 		    'email' => $email,
@@ -77,6 +77,7 @@
 			 $result = json_decode($response);
 
 			 return $result;
+			 // header("Location: customer_dashboard.php?successmsg=Successfully paid");
 
 		}
 
@@ -84,7 +85,7 @@
 		// insert payment transaction details
 		public function insertTransactionDetails($session_id, $amount, $reference) {
 			$paymentmode = "paystack";
-			$transstatus = "completed";
+			$transstatus = "pending";
 			$dueyear = "2021";
 			$datepaid = date('Y-m-d h:i:s');
 
@@ -93,6 +94,7 @@
 			$response = $this->dbcon->query($sql);
 			if ($this->dbcon->affected_rows == 1) {
 				return true;
+				
 			}
 			else {
 				return false;

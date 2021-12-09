@@ -62,9 +62,13 @@ include_once("classes.php");
 									
 									// to go a step further, add a special key to authenticate who is in session.
 									$_SESSION['mem'] = "@@Exec_2090%";
-
+									if(isset($_SESSION['cust_email'])) {
+										header("Location: customer_dashboard.php?msg=Welcome back");
+									}
+									else {
 									header("Location: login.php?msg=Successfuly added to cart");
 									exit;
+									}
                     			}
                     		}
                     	?>

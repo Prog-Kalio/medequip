@@ -186,8 +186,20 @@
 						$('#tonometer3').hide();
 				});
 
+				$('#editlink').click(function(){
+						$('#quantity').hide();
+						$('#editquantity').show();	
+				})
 
+				$('#deletelink').click(function(){
+						$('#deleteitem').show();
+						$('#deletelink').hide();	
+				})
 				
+				// $('paybtn').click(function(){
+				// 	$('orderdiv').location.reload(true);
+				// 	$('cartdiv').location.reload(true);
+				// })
 				
 		});
 	</script>

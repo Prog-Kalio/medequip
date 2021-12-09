@@ -1,6 +1,5 @@
 <?php 
 
-var_dump($_REQUEST);
 include_once("paystackclass.php");
 
 $payobj = new Payment;
@@ -10,7 +9,7 @@ if ($output->data->status==='success') {
 	$updatetrans = $payobj->updateTransactionDetails($_REQUEST['reference']);
 
 	if ($updatetrans === true) {
-		header("Location: index.php");
+		header("Location: customer_dashboard.php");
 		exit;
 	}
 }

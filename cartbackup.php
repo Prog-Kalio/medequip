@@ -3,11 +3,11 @@ include_once("classes.php");
 include_once("paystackclass.php");
 include_once("memheader.php");
 if(!isset($_SESSION['cust_email'])) {
-	header("Location: index.php?msg=Please login");
+	header("Location: login.php?msg=Please login");
 }
 elseif ((!isset($_SESSION['mem'])) && ($_SESSION['mem'] != '@@Exec_2090%')) {
   
-	header("Location: index.php?msg=Please login");
+	header("Location: login.php?msg=Please login");
 }
 else {
 	$success = "Welcome";
@@ -41,28 +41,18 @@ else {
 		</div>
 
 
-		<div class="col-md-2 mt-5">
-			<label>Choose Order Type</label><br>
-			<select id="ordertype" class="form-control">
-				<option value="">--Select--</option>
-				<option value="New Order">New Order</option>
-				<option value="Pending Order">Pending Order</option>
-				<option value="Successful Order">Successful Order</option>
-			</select>
-		</div>
-
-		<div class="col-md-6 mt-2">
-			<h6 class="text-center">My Orders</h6>
-			<hr>
-			<table class="table table-striped table-bordered" id="orderdiv">
+		<div class="col-md-6 offset-md-1 mt-5">
+			<table class="table table-striped table-bordered">
 				<thead>
 					<tr>
 						<th>S/N</th>
+						<th>Cart ID</th>
+						<th>Session ID</th>
 						<th>Name of Equipment</th>
 						<th>Quantity</th>
 						<th>Price</th>
 						<th>Total</th>
-					
+						<th>Action</th>
 					</tr>
 					
 				</thead>
@@ -84,41 +74,10 @@ else {
 					?>
 					<tr>
 						<td><?php echo ++$counter ?></td>
+						<td><?php echo $value['cart_id'] ?></td>
+						<td><?php echo $value['session_id'] ?></td>
 						<td><?php echo $value['equip_name'] ?></td>
-						<td> <div id="quantity"><?php echo $value['quantity'] ?></div>
-							
-							<div id="editquantity" style="display:none">
-								<?php 
-                    		if(isset($_POST['edit']) &&  $_POST['edit']=='EDIT') {
-                    			if(empty($_POST['quantity']) || $_POST['quantity']<1) {
-                    				echo "<div class='alert alert-danger'>Minimum = 1</div>";
-                    			}
-                    			else {
-                    				$objcart = new MyCart;
-                    				$equip_name = $_POST['equip_name'];
-                    				$equip_price = $_POST['equip_price'];
-                    				$quantity = $_POST['quantity'];
-                    				$session_id = $_SESSION['mycart'];
-									$newcart = $objcart->editCart($_POST['quantity'], $_POST['cart_id']);
-									
-									// to go a step further, add a special key to authenticate who is in session.
-									$_SESSION['mem'] = "@@Exec_2090%";
-
-									header("Location: cart.php?msg=Successfuly edited");
-									exit;
-		                    			}
-		                    		}
-		                    	?>
-								<form name="cartform" method="post" action="" class="form-group">
-									<input type="hidden" name="cart_id" value="<?php echo $value['cart_id'] ?>"><br>
-									<input type="hidden" name="equip_name" value="<?php echo $value['equip_name'] ?>">
-									<input type="text" name="quantity" id="qty" size="2px" style="text-align:center"><br>
-									<input type="hidden" name="equip_price" value="<?php echo $value['equip_price'] ?>">
-									<br>
-									<input type="submit" class="btn btn-info btn-block" name="edit" value="EDIT">
-								</form>
-							</div>
-						</td>
+						<td><?php echo $value['quantity'] ?></td>
 						<td><?php echo number_format($value['equip_price'], 2) ?></td>
 						<td><?php 
 							$qty = $value['quantity'];
@@ -128,7 +87,10 @@ else {
 							$paydue+= $total;
 							echo number_format($total, 2);
 						?></td>
-						
+						<td>
+							<a href="edititem.php?action=edit&id=<?php echo $value["session_id"]; ?>"><i class="fa fa-edit"></i></a><br>
+							<a href="deleteitem.php?action=delete&id=<?php echo $value["session_id"]; ?>"><span class="text-danger"><i class="fa fa-trash"></i></span></a>
+						</td>
 					</tr>
 					
 					<?php 
@@ -139,9 +101,11 @@ else {
 					?>
 					<tr>
 						<td></td>
+						<td></td>
 						<td>Payment Due</td>
 						<td></td>
-						
+						<td></td>
+						<td></td>
 						<td> <?php
 							if(!empty($paydue)) {
 							echo (number_format($paydue, 2));
@@ -155,10 +119,16 @@ else {
 					      if (isset($_POST['submit']) && $_POST['submit'] == 'PAY') {
 					        // create payment object
 					        $payobj = new Payment;
-					        $email= $_SESSION['cust_email'];
-					        $paydue = $_POST['amount'];
+					        $_POST['email'] = $_SESSION['cust_email'];
+					        $_POST['amount'] = $paydue;
 					        // use initializePaystack method
-					        $output = $payobj->initializePaystack($email, $paydue);
+					        $output = $payobj->initializePaystack($_POST['email'], $_POST['amount']);
+
+					        // echo "<pre>";
+					        // print_r($output);
+					        // echo "</pre>";
+
+
 					        $redirecturl = $output->data->authorization_url;
 					        $reference = $output->data->reference;
 
@@ -173,21 +143,19 @@ else {
 						<form method="post" action="" name="payform">
 			        	<input type="hidden" name="email" value=" <?php echo $_SESSION['cust_email'] ?> ">
 			        	<input type="hidden" name="amount" value=" <?php echo $paydue ?> ">
-			        	<input type="submit" class="btn btn-success btn-block" name="submit" id="paybtn" value="PAY">
+			        	<input type="submit" class="btn btn-success btn-block" name="submit" value="PAY">
 			        </form>
 						</td>
 					</tr> 
 				</tbody>
 			</table>
-
 		</div>
+
+		
 
 	</div>
 
 
-
-
-		
 
 <?php 
 include_once("whatsapp.php");

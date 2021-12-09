@@ -70,6 +70,15 @@ else {
 						<p>Just incase, you didn't check your mail; we've got amazing new medical equipment at great prices too!</p>
 						<p>What would you like to buy today?</p>
 					</div>
+					<div>
+						<?php 
+
+							if (isset($_GET['successmsg'])){
+								echo "<div class='alert alert-success text-center'>".$_GET['successmsg']."<br><br> Still want to shop for more?</div>";
+							}
+						?>
+
+					</div>
 					<?php } ?>
 				</div>
 

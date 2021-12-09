@@ -21,7 +21,7 @@ else {
 			<a href="admin_dashboard.php" class="btn btn-block btn-light text-left">DASHBOARD</a>
 		</div>
 		<div class="col-md-4 d-menu-col" id="d-menucol2-id">
-			<a href="all_orders.php" class="btn btn-block btn-light text-left">ORDERS</a>
+			<a href="admin_orders.php" class="btn btn-block btn-light text-left">ORDERS</a>
 		</div>
 		<div class="col-md-4 d-menu-col" id="d-menucol3-id">
 			<a href="customers.php" class="btn btn-block btn-light text-left">CUSTOMERS</a>

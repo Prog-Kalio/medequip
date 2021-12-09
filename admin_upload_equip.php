@@ -27,7 +27,7 @@ else {
 					?>
 					</div>
 					<a href="admin_dashboard.php" class="btn btn-block btn-light text-left">DASHBOARD</a>
-					<a href="orders.php" class="btn btn-block btn-light text-left">ORDERS</a>
+					<a href="admin_orders.php" class="btn btn-block btn-light text-left">ORDERS</a>
 					<a href="customers.php" class="btn btn-block btn-light text-left">CUSTOMERS</a>
 					<a href="retailers.php" class="btn btn-block btn-light text-left">RETAILERS</a>
 					<a href="admin_upload_equip" class="btn btn-block btn-light text-left">UPLOAD EQUIPMENT</a>

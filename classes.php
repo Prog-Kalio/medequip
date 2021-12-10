@@ -936,4 +936,3 @@ class MyRetailers {
 
 // End MyOrderDetails class Diagram
 ?>
-?>

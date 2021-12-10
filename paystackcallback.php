@@ -9,7 +9,7 @@ if ($output->data->status==='success') {
 	$updatetrans = $payobj->updateTransactionDetails($_REQUEST['reference']);
 
 	if ($updatetrans === true) {
-		header("Location: customer_dashboard.php");
+		header("Location: customer_dashboard.php?successmsg=Transaction Successful");
 		exit;
 	}
 }

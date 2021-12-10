@@ -169,6 +169,21 @@ else {
 								echo "0";
 							}
 						?></td>
+						<td>
+							<?php 
+	                    		if(isset($_POST['proceed']) &&  $_POST['proceed']=='PROCEED') {
+	                    						
+										// to go a step further, add a special key to authenticate who is in session.
+										$_SESSION['mem'] = "@@Exec_2090%";
+
+										header("Location: orders.php?msg=confirmed for payment");
+										exit;
+	                    		}
+	                    	?>
+							<form name="confirmation_form" method="post" action="" class="form-group">
+								<input type="submit" class="btn btn-success btn-block" name="proceed" value="PROCEED">
+							</form>
+						</td>
 						
 					</tr> 
 				</tbody>

@@ -5,7 +5,7 @@ ob_start();
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<meta name="keywords" content="medical equipment, ">
+	<meta name="keywords" content="medical equipment market, theatre, laboratory, ophthalmic, ENT, Dental, General, Orthopeadic, consumables, hospital furniture, tonometer, autoref, cvf, ventillator, combi unit, online medical market, shop online, buy medical equipment">
 	<meta name="description" content="Medical Equipment Market MEM is an online market where Medical Professionals can get any category of either pocket-friendly or high-end medical equipment brands; irrespective of their location. It's a home for also Procurement officers to confirm prices of medical equpment before awarding contracts. Retailers, Distributors and Original Equipment Manufacturers can showcase their brands too.">
 	<meta name="author" content="Mr. Kalio Tamunotonye">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
